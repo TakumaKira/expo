@@ -110,8 +110,6 @@ public class FileDownloader {
 
         @Override
         public void onResponse(Call call, Response response) throws IOException {
-          Log.i("TEST_DEBUG response","start!");
-
           if (!response.isSuccessful()) {
             callback.onFailure("Failed to download manifest from URL: " + configuration.getUpdateUrl(), new Exception(response.body().string()));
             return;
@@ -119,7 +117,7 @@ public class FileDownloader {
 
           try {
             String updateResponseBody = response.body().string();
-            Log.i("TEST_DEBUG response body",updateResponseBody);
+            Log.i("DEBUG",updateResponseBody);
             JSONObject updateResponseJson = extractUpdateResponseJson(updateResponseBody, configuration);
 
             final boolean isSignatureInBody = updateResponseJson.has("manifestString") && updateResponseJson.has("signature");
@@ -278,7 +276,6 @@ public class FileDownloader {
   }
 
   /* package */ static Request setHeadersForManifestUrl(UpdatesConfiguration configuration, Context context) {
-    Log.i("TEST_DEBUG","HELLO!");
     Request.Builder requestBuilder = new Request.Builder()
             .url(configuration.getUpdateUrl().toString())
             .header("Accept", "application/expo+json,application/json")
@@ -286,8 +283,7 @@ public class FileDownloader {
             .header("Expo-Api-Version", "1")
             .header("Expo-Updates-Environment", "BARE")
             .header("Expo-JSON-Error", "true")
-            //.header("Expo-Accept-Signature", String.valueOf(configuration.isExpoGo()));
-            .header("Expo-Accept-Signature", "true");
+            .header("Expo-Accept-Signature", String.valueOf(configuration.isExpoGo()));
 
     // legacy manifest loads should ignore cache-control headers from the server and always load remotely
     if (configuration.usesLegacyManifest()) {
@@ -295,7 +291,6 @@ public class FileDownloader {
     }
 
     String runtimeVersion = configuration.getRuntimeVersion();
-    Log.i("TEST_DEBUG runtimeVersion",runtimeVersion);
     String sdkVersion = configuration.getSdkVersion();
     if (runtimeVersion != null && runtimeVersion.length() > 0) {
       requestBuilder = requestBuilder.header("Expo-Runtime-Version", runtimeVersion);

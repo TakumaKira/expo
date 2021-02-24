@@ -37,7 +37,7 @@ public class UpdatesConfiguration {
   }
 
   private boolean mIsEnabled;
-  //private boolean mIsExpoGo = false;
+  private boolean mIsExpoGo = false;
   private String mScopeKey;
   private Uri mUpdateUrl;
   private Map<String, String> mRequestHeaders = new HashMap<>();
@@ -52,9 +52,9 @@ public class UpdatesConfiguration {
   public boolean isEnabled() {
     return mIsEnabled;
   }
-  //public boolean isExpoGo() {
-  //  return mIsExpoGo;
-  //}
+  public boolean isExpoGo() {
+    return mIsExpoGo;
+  }
 
   public String getScopeKey() {
     return mScopeKey;
@@ -80,7 +80,7 @@ public class UpdatesConfiguration {
   }
 
   public String getRuntimeVersion() {
-    return mRuntimeVersion != null ? mRuntimeVersion : "40.0.0";
+    return mRuntimeVersion;
   }
 
   public boolean isMissingRuntimeVersion() {
@@ -144,7 +144,7 @@ public class UpdatesConfiguration {
       mIsEnabled = isEnabledFromMap;
     }
 
-    //mIsExpoGo = readValueCheckingType(map, "isExpoGo",Boolean.class);
+     mIsExpoGo = readValueCheckingType(map, "isExpoGo",Boolean.class);
 
     Uri updateUrlFromMap = readValueCheckingType(map, UPDATES_CONFIGURATION_UPDATE_URL_KEY, Uri.class);
     if (updateUrlFromMap != null) {
